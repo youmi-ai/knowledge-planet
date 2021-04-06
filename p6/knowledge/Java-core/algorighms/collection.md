@@ -46,6 +46,8 @@
 
 ### 树
 
+[详情](./tree.md)
+
 ![image-20210406113553965](/Users/ty/workspace/knowledge-planet/p6/knowledge/Java-core/algorighms/resources/tree-detail.png)
 
 
