@@ -1,112 +1,60 @@
 # Java集合指南
 
-[简介](#简介)
-
-- [作用和本质](#作用和本质)
-- [集合类型](###集合类型)
-  API
-  **数据结构**
-  数组
-  链表
-  树
-  **集合**
-  Collection
-  List
-  ArrayList(数组)
-  **Vector** (数组实现、线程同步)
-  **LinkList** (链表)
-  Set
-  **HashSet** ( **Hash** 表)
-  **TreeSet** (二叉树)
-  **LinkHashSet** ( **HashSet+LinkedHashMap** )
-  Queue
-  Map
-  HashMap **(数组** + **链表** +红黑树)
-  **JAVA7** 实现
-  JAVA8 实现
-  **HashTable** (线程安全)
-  **TreeMap** (可排序)
-  **LinkHashMap** (记录插入顺序)
-  源码分析
-  ArrayList源码解读
-  数据结构
-  多线程安全分析
-  add方法问题分析
-  数组容量检测的并发问题
-  HashMap源码分析
-  核心概念
-  扩容机制
-  数据结构转变规则
-  put分析
-  扩容过程
-  HashMap的扩容及树化过程
-  基础类
-  测试类
-  第一阶段
-  第二阶段
-  第三阶段
-  小结
-  第四阶段
-  线程安全分析
-  HashMap
-  jdk1.7不安全分析(头插法)
-  jdk1.8不安全分析(尾插法)
-  ConcurrentHashMap分析
-
-
-##### 线程安全解决方案
-
-##### 结构
-
-##### 初始化
-
-```
-定位 Segment
-get方法
-put 操作
-size操作
-总结
-算法
-二分查找法
-```
 
 
 ## 简介
 
 ### 作用和本质
 
-##### 集合的主要作用是存储对象的容器
+- 集合的主要作用是存储对象的容器
 
-##### 集合的本质是用于存储对象的数据结构
+- 集合的本质是用于存储对象的数据结构
 
 官方文档地址：https://docs.oracle.com/javase/tutorial/collections/index.html
 
-## 集合类型
 
-集合类存放于 Java.util 包中，主要有 3 种:set(集)、list(列表包含 Queue)和 map(映射)。
 
-```
+### 集合类型
+
+集合类存放于 Java.util 包中，主要有 3 种: set(集)、list(列表包含 Queue)和 map(映射)。
+
 1. Collection:Collection 是集合 List、Set、Queue 的最基本的接口。
 2. Iterator:迭代器，可以通过迭代器遍历集合中的数据
 3. Map:是映射表的基础接口
-```
 
-## API
+![image-20210406111159082](./resources/overview-collection.png)
 
-# 数据结构
-
-## 数组
-
-## 链表
+![image-20210406111720576](./resources/overview-collection-dependence.png)
 
 
-## 树
 
-# 集合
+## 数据结构
 
-## Collection
+### 数组
 
-## List
+![image-20210406112712130](./resources/array&list.png)
+
+
+
+![image-20210406112850594](/Users/ty/workspace/knowledge-planet/p6/knowledge/Java-core/algorighms/resources/array-detail.png)
+
+
+
+### 链表
+
+![image-20210406113506815](/Users/ty/workspace/knowledge-planet/p6/knowledge/Java-core/algorighms/resources/list-detai.png)
+
+### 树
+
+![image-20210406113553965](/Users/ty/workspace/knowledge-planet/p6/knowledge/Java-core/algorighms/resources/tree-detail.png)
+
+
+
+## 集合
+
+### Collection
+
+#### List
 
 Java 的 List 是非常常用的数据类型。List 是有序的 Collection。Java List 一共三个实现类: 分别是
 
@@ -153,7 +101,7 @@ Set 注重独一无二的性质,该体系集合用于存储无序(存入和取�
 
 按照哈希值来存的所以取数据也是按照哈希值取得。元素的哈希值是通过元素的 hashcode 方法来获取
 
-的, HashSet 首先判断两个元素的哈希值，如果哈希值一样，接着会比较 equals 方法 如果 equls 结果
+的, HashSet 首先判断两个元素的哈希值，如果哈希值一样，接着会比较 equals 方法 如果 equals 结果
 
 为 true ，HashSet 就视为同一个元素。如果 equals 为 false 就不是同一个元素。
 
@@ -165,23 +113,17 @@ hashCode 值相同，但 equals 不相同的情况。
 
 HashSet 通过 hashCode 值来确定元素在内存中的位置。一个 hashCode 位置上可以存放多个元素。
 
+![image-20210406133236882](/Users/ty/workspace/knowledge-planet/p6/knowledge/Java-core/algorighms/resources/hashset.png)
+
 **TreeSet(二叉树)**
 
-```
 1. TreeSet()是使用二叉树的原理对新 add()的对象按照指定的顺序排序(升序、降序)，每增 加一个对
 象都会进行排序，将对象插入的二叉树指定的位置。
-```
-```
 2. Integer 和 String 对象都可以进行默认的 TreeSet 排序，而自定义类的对象是不可以的，自 己定
-义的类必须实现 Comparable 接口，并且覆写相应的 compareTo()函数，才可以正常使 用。
-```
-```
+  义的类必须实现 Comparable 接口，并且覆写相应的 compareTo()函数，才可以正常使 用。
 3. 在覆写 compare()函数时，要返回相应的值才能使 TreeSet 按照一定的规则来排序
-```
 
-##### 4. 比较此对象与指定对象的顺序。如果该对象小于、等于或大于指定对象，则分别返回负整
-
-##### 数、零或正整数。
+4. 比较此对象与指定对象的顺序。如果该对象小于、等于或大于指定对象，则分别返回负整数、零或正整数。
 
 **LinkHashSet(HashSet+LinkedHashMap)**
 
@@ -197,9 +139,9 @@ HashSet 通过 hashCode 值来确定元素在内存中的位置。一个 hashCod
 
 #### Queue
 
-## Map
+### Map
 
-### HashMap(数组+链表+红黑树)
+#### HashMap(数组+链表+红黑树)
 
 HashMap 根据键的 hashCode 值存储数据，大多数情况下可以直接定位到它的值，因而具有很快
 
@@ -271,20 +213,36 @@ LinkedHashMap 时，先得到的记录肯定是先插入的，也可以在构造
 
 #### 数据结构
 
-
 ArrayList内部是使用数组保存元素的，数据定义如下：
+
+```java
+transient Object[] elementData; // non-private to simplify nested class access
+```
+
+
 
 #### 多线程安全分析
 
-**add方法问题分析**
+##### add方法问题分析
 
-##### 此方法中有两个操作，一个是数组容量检查，另外就是将元素放入数据中。我们先看第二个简单的开始
+```java
+// ArrayList#add
+public boolean add(E e) { ensureCapacityInternal(size + 1); //此处存在问题，因为size是线程共享的 elementData[size++] = e;
+    return true;
+}
+```
 
-##### 分析，当多个线程执行顺序如下所示的时候，会出现最终数据元素个数小于期望值。
+此方法中有两个操作，一个是数组容量检查，另外就是将元素放入数据中。我们先看第二个简单的开始
+
+分析，当多个线程执行顺序如下所示的时候，会出现最终数据元素个数小于期望值。
+
+![image-20210406141250045](./resources/array-add-issue.png)
 
 按照此顺序执行完之后，我们可以看到，elementData[n]的只被设置了两次，第二个线程设置的值将前
 
 一个覆盖，最后size=n+1。下面使用代码进行验证此问题。
+
+
 
 **代码验证**
 
@@ -292,116 +250,105 @@ ArrayList内部是使用数组保存元素的，数据定义如下：
 
 100 个数字，如果程序正常执行的情况下应该是输出：
 
-##### 代码如下：
+**代码如下：**
 
+```java
+list size is : 10000	
 ```
-transient Object[] elementData; // non-private to simplify nested class access
-```
-```
-// ArrayList#add
-public boolean add(E e) {
-ensureCapacityInternal(size + 1 );
-//此处存在问题，因为size是线程共享的
-elementData[size++] = e;
-return true;
-}
-```
-```
-list size is : 10000
-```
-```
-package com.naixue.vip.p6;
-```
-```
+```java
+package ai.youmi.array;
+
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-```
 
-当执行此main方法后，输出如下：
-
-##### /**
-
-```
-* @Description
-* @Author 向寒 奈学教育
-* @Date 2020/7/8 19:
-**/
+/**
+ * @author Dongchan Year
+ */
 public class ArrayListTest {
-private static List<Integer> list = new ArrayList<Integer>();
+
+    private final static ExecutorService pool = Executors.newFixedThreadPool(1000);
+    private static ArrayList<Integer> list = new ArrayList<>();
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 10000; i++) {
+            pool.submit(new IncreaseTask());
+        }
+        if (!pool.isTerminated()) {
+            try {
+                Thread.sleep(1000 * 10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Total execute number: " + 10000 * 100);
+        System.out.println("Actual execute number: " + list.size());
+    }
+
+    private static class IncreaseTask extends Thread {
+        @Override
+        public void run() {
+            System.out.println("ThreadId: " + Thread.currentThread().getId() + " start !");
+            for (int i = 0; i < 100; i++) {
+                list.add(i);
+            }
+            System.out.println("ThreadId: " + Thread.currentThread().getId() + " finish !");
+        }
+    }
+}
+
 ```
-```
-private static ExecutorService executorService =
-Executors.newFixedThreadPool( 1000 );
-```
-```
-private static class IncreaseTask extends Thread{
-@Override
-public void run() {
-System.out.println("ThreadId:" + Thread.currentThread().getId() + "
-start!");
-for(int i = 0 ; i < 100 ; i++){
-list.add(i);
-}
-System.out.println("ThreadId:" + Thread.currentThread().getId() + "
-finished!");
-}
-}
-```
-```
-public static void main(String[] args){
-for(int i= 0 ; i < 1000 ; i++){
-executorService.submit(new IncreaseTask());
-}
-executorService.shutdown();
-while (!executorService.isTerminated()){
-try {
-Thread.sleep( 1000 * 10 );
-}catch (InterruptedException e){
-e.printStackTrace();
-}
-}
-System.out.println("All task finished!");
-System.out.println("预计存储大小为："+ 1000 * 100 );
-System.out.println("list size is :" + list.size());
-}
-}
+
+```java
+....................
+....................
+ThreadId: 653 finish !
+ThreadId: 659 finish !
+ThreadId: 611 start !
+ThreadId: 611 finish !
+ThreadId: 659 start !
+ThreadId: 659 finish !
+ThreadId: 651 start !
+ThreadId: 651 finish !
+ThreadId: 651 start !
+ThreadId: 651 finish !
+ThreadId: 235 start !
+ThreadId: 235 finish !
+Total execute number: 1000000
+Actual execute number: 997567
 ```
 
 从以上执行结果来看，最后输出的结果会小于我们的期望值。即当多线程调用add方法的时候会出现元
 
 素覆盖的问题。
 
-**数组容量检测的并发问题**
+##### 数组容量检测的并发问题
 
-在add方法源码中，我们看到在每次添加元素之前都会有一次数组容量的检测，add中调用此方法的源
+在add方法源码中，我们看到在每次添加元素之前都会有一次数组容量的检测，add中调用此方法的源码如下：
 
-码如下：
-
-##### 容量检测的相关源码如下：
-
-```
+```java
 ensureCapacityInternal(size + 1 );
 ```
-```
+容量检测的相关源码如下：
+
+```java
+private static int calculateCapacity(Object[] elementData, int minCapacity) {
+  if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+    return Math.max(DEFAULT_CAPACITY, minCapacity);
+  }
+  return minCapacity;
+}
+
 private void ensureCapacityInternal(int minCapacity) {
-if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
-minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
+  ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
 }
-```
-```
-ensureExplicitCapacity(minCapacity);
-}
-```
-```
+
 private void ensureExplicitCapacity(int minCapacity) {
-modCount++;
-```
-```
-// overflow-conscious code
-if (minCapacity - elementData.length > 0 )
-grow(minCapacity);
+  modCount++;
+
+  // overflow-conscious code
+  if (minCapacity - elementData.length > 0)
+    grow(minCapacity);
 }
 ```
 
@@ -415,11 +362,98 @@ grow(minCapacity);
 
 此会抛出数组越界异常。
 
-**代码验证数组容量检测的并发问题**
 
-使用如下代码：
 
-执行main方法后，我们可以看到控制台输出如下：
+##### Fail-fast 问题
+
+```java
+package ai.youmi.array;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ * Fail-Fast systems abort operation as-fast-as-possible exposing failure immediately and
+ * stopping the whole operation.
+ * The program use iterator with iterator when modCount != expectedModCount export exception in multi-thread.
+ *
+ * @author Dongchan Year
+ */
+public class ArrayListFailFast {
+
+    public static void main(String[] args) {
+
+        ArrayList<Integer> array = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            array.add(i);
+        }
+
+        new ArrayListIterator(array).start();
+        new ArrayListAdd(array).start();
+    }
+
+    private static class ArrayListAdd extends Thread {
+        private ArrayList<Integer> list;
+
+        public ArrayListAdd(ArrayList<Integer> list) {
+            this.list = list;
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < 11; i++) {
+                this.list.add(i);
+                System.out.println("Loop add value to list: " + i);
+            }
+        }
+    }
+
+    private static class ArrayListIterator extends Thread {
+        private ArrayList<Integer> list;
+
+        public ArrayListIterator(ArrayList<Integer> list) {
+            this.list = list;
+        }
+
+        @Override
+        public void run() {
+            for (Iterator<Integer> iterator = this.list.iterator(); this.list.iterator().hasNext(); ) {
+                System.out.println("Iterator value: " + iterator.next());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+
+```
+
+输出的结果如下：
+
+```java
+Iterator value: 0
+Loop add value to list: 0
+Loop add value to list: 1
+Loop add value to list: 2
+Loop add value to list: 3
+Loop add value to list: 4
+Loop add value to list: 5
+Loop add value to list: 6
+Loop add value to list: 7
+Loop add value to list: 8
+Loop add value to list: 9
+Loop add value to list: 10
+Exception in thread "Thread-0" java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:909)
+	at java.util.ArrayList$Itr.next(ArrayList.java:859)
+	at ai.youmi.array.ArrayListFailFast$ArrayListIterator.run(ArrayListFailFast.java:55)
+
+```
+
+
 
 ### HashMap源码分析
 
