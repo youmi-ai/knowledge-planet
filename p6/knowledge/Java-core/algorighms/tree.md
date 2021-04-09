@@ -121,6 +121,10 @@ XII.**森林**
 
 ![image-20210406175821003](./resources/self-balancing_binary_search_tree.png)
 
+*上图的平衡因子就是左子树和右子树的高度差，就叫做平衡因子（红色框的数字）*
+
+​	
+
 
 
 ### 右旋产生条件
